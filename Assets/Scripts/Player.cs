@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
 
     private GameObject _shield = null;
     private bool _shieldActive = false;
+    private int _shieldCurrentStrength = 0;
+    [SerializeField] private Color[] _shieldStrengthColors = new Color[] { Color.red, Color.yellow, Color.white };
 
     private bool _boostActive = false;
 
@@ -202,8 +204,27 @@ public class Player : MonoBehaviour
 
     public void ActivateShield(bool isActive)
     {
-        _shieldActive = isActive;
-        _shield.SetActive(isActive);
+        if (isActive)
+        {
+            _shieldActive = true;
+            _shieldCurrentStrength = _shieldStrengthColors.Length;
+            _shield.GetComponent<SpriteRenderer>().color = _shieldStrengthColors[_shieldCurrentStrength - 1];
+            _shield.SetActive(true);
+        }
+        else
+        {
+            _shieldCurrentStrength--;
+            if (_shieldCurrentStrength <= 0)
+            {
+                _shieldActive = false;
+                _shield.SetActive(false);
+            }
+            else
+            {
+                _shield.GetComponent<SpriteRenderer>().color = _shieldStrengthColors[_shieldCurrentStrength - 1];
+            }
+        }
+        
     }
 
     public void AddToScore(int points)
