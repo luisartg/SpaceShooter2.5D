@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] float _speed = 1f;
     [SerializeField] float _boostSpeed = 3f;
+    [SerializeField] float _thrusterSpeed = 3f;
     [SerializeField] float _maxY = 3f;
     [SerializeField] float _minY = -3f;
     [SerializeField] float _maxX = 11.5f;
@@ -26,6 +27,8 @@ public class Player : MonoBehaviour
 
     private GameObject _shield = null;
     private bool _shieldActive = false;
+
+    private bool _boostActive = false;
 
     [SerializeField] int _score = 0;
     private UIManager _uiManagerRef = null;
@@ -80,7 +83,16 @@ public class Player : MonoBehaviour
 
     private float GetMovementValue(float axisValue)
     {
-        return axisValue * _speed * Time.deltaTime;
+        float currentSpeed = _speed;
+        if (_boostActive)
+        {
+            currentSpeed += _boostSpeed; 
+        }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            currentSpeed += _thrusterSpeed;
+        }
+        return axisValue * currentSpeed * Time.deltaTime;
     }
 
     private void LimitPositionY()
@@ -178,15 +190,14 @@ public class Player : MonoBehaviour
     public void ActivateSpeedBoost()
     {
         Debug.Log("Speed boost active");
-        float originalSpeed = _speed;
-        _speed = _boostSpeed;
-        StartCoroutine(DeactivateSpeedBoost(originalSpeed));
+        _boostActive = true;
+        StartCoroutine(DeactivateSpeedBoost());
     }
 
-    private IEnumerator DeactivateSpeedBoost(float originalSpeed)
+    private IEnumerator DeactivateSpeedBoost()
     {
         yield return new WaitForSeconds(_powerUpPeriodSeconds);
-        _speed = originalSpeed;
+        _boostActive = false;
     }
 
     public void ActivateShield(bool isActive)

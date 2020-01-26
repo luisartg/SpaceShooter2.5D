@@ -202,7 +202,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lives: 3
   _speed: 12
-  _boostSpeed: 18
+  _boostSpeed: 6
+  _thrusterSpeed: 6
   _maxY: 3
   _minY: -3
   _maxX: 11.5
