@@ -54,8 +54,17 @@ public class PowerUp : MonoBehaviour
                 break;
             case 4: AddLife(collision);
                 break;
+            case 5: ActivateEnergyShot(collision);
+                break;
         }
         
+    }
+
+    private void ActivateEnergyShot(Collider2D collision)
+    {
+        var player = collision.GetComponent<Player>();
+        player.ActivateEnergyShot();
+        Destroy(gameObject);
     }
 
     private void AddLife(Collider2D collision)

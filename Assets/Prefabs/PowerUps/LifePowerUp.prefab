@@ -98,8 +98,8 @@ MonoBehaviour:
   _speed: 3
   _top: 7
   _bottomLimit: -7
-  _leftLimit: -11
-  _rightLimit: 11
+  _leftLimit: -9
+  _rightLimit: 9
   powerUpID: 4
   _powerUpSound: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!70 &569579805620622861

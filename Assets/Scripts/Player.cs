@@ -17,11 +17,13 @@ public class Player : MonoBehaviour
 
     [SerializeField] GameObject _laserPrefab = null;
     [SerializeField] GameObject _tripleLaserPrefab = null;
+    [SerializeField] GameObject _energyShotPrefab = null;
     [SerializeField] float _firerate = 0.15f;
     [SerializeField] int _ammo = 15;
 
     [SerializeField] SpawnManager _spawnManager = null;
     [SerializeField] bool _tripleShotEnabled = false;
+    [SerializeField] bool _energyShotEnabled = false;
     [SerializeField] int _powerUpPeriodSeconds = 6;
 
     private float _timeLeftToFire = -1f;
@@ -132,6 +134,11 @@ public class Player : MonoBehaviour
                 {
                     Instantiate(_tripleLaserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
                 }
+                else if (_energyShotEnabled)
+                {
+                    Instantiate(_energyShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                    _ammo++; // we are cancelling the ammo spent, only for this shot
+                }
                 else
                 {
                     Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
@@ -203,6 +210,19 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(_powerUpPeriodSeconds);
         _tripleShotEnabled = false;
+    }
+
+    public void ActivateEnergyShot()
+    {
+        _energyShotEnabled = true;
+        _ammo = 15;
+        StartCoroutine(DeactivateEnergyShot());
+    }
+
+    private IEnumerator DeactivateEnergyShot()
+    {
+        yield return new WaitForSeconds(5);
+        _energyShotEnabled = false;
     }
 
     public void ActivateSpeedBoost()

@@ -96,6 +96,12 @@ public class Enemy : MonoBehaviour
             Destroy(other.gameObject);
             StartDestruction();
         }
+
+        if (collisionTag == "Energy")
+        {
+            FindObjectOfType<Player>().AddToScore(_enemyScoreValue);
+            StartDestruction();
+        }
     }
 
     private void CheckPlayerCollision(string collisionTag, Collider2D other)
