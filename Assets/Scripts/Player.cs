@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject _laserPrefab = null;
     [SerializeField] GameObject _tripleLaserPrefab = null;
     [SerializeField] float _firerate = 0.15f;
+    [SerializeField] int _ammo = 15;
 
     [SerializeField] SpawnManager _spawnManager = null;
     [SerializeField] bool _tripleShotEnabled = false;
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject[] _playerHits = null;
 
     [SerializeField] AudioClip _laserSound = null;
+    [SerializeField] AudioClip _outOfAmmoSound = null;
     [SerializeField] AudioClip _explosionSound = null;
     AudioSource _audioSource = null;
 
@@ -60,6 +62,8 @@ public class Player : MonoBehaviour
 
         if (!_spawnManager) Debug.Log("The Spawn Manager is null");
         if (!_uiManagerRef) Debug.Log("The UI Manager is null");
+
+        _uiManagerRef.UpdateAmmoText(_ammo);
     }
 
     // Update is called once per frame
@@ -120,15 +124,27 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _timeLeftToFire)
         {
             _timeLeftToFire = Time.time + _firerate;
-            if (_tripleShotEnabled)
+            if (_ammo > 0)
             {
-                Instantiate(_tripleLaserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                _ammo--;
+                _uiManagerRef.UpdateAmmoText(_ammo);
+                if (_tripleShotEnabled)
+                {
+                    Instantiate(_tripleLaserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                }
+                _audioSource.clip = _laserSound;
+                _audioSource.Play();
             }
             else
             {
-                Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                _audioSource.clip = _outOfAmmoSound;
+                _audioSource.Play();
+                return;
             }
-            _audioSource.Play();
         }
     }
 

@@ -10,16 +10,22 @@ public class UIManager : MonoBehaviour
     private Text _scoreText = null;
     private Image _livesDisplay = null;
     private Text _gameOverMessage = null;
+    private Text _ammoText = null;
     private GameObject _gameOverScreen = null;
     [SerializeField] Sprite[] _livesSpritesRef = null;
+
+    private void Awake()
+    {
+        _scoreText = transform.Find("ScoreText").GetComponent<Text>();
+        _ammoText = transform.Find("AmmoText").GetComponent<Text>();
+        _livesDisplay = transform.Find("LivesDisplay").GetComponent<Image>();
+        _gameOverScreen = transform.Find("GameOverScreen").gameObject;
+        _gameOverMessage = _gameOverScreen.transform.Find("GameOverText").GetComponent<Text>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        _scoreText = transform.Find("ScoreText").GetComponent<Text>();
-        _livesDisplay = transform.Find("LivesDisplay").GetComponent<Image>();
-        _gameOverScreen = transform.Find("GameOverScreen").gameObject;
-        _gameOverMessage = _gameOverScreen.transform.Find("GameOverText").GetComponent<Text>();
         UpdateScoreText(0);
     }
 
@@ -31,6 +37,11 @@ public class UIManager : MonoBehaviour
     public void UpdateScoreText(int score)
     {
         _scoreText.text = "Score: " + score.ToString();
+    }
+
+    public void UpdateAmmoText(int ammoLeft)
+    {
+        _ammoText.text = "Ammo: " + ammoLeft.ToString();
     }
 
     public void UpdateLives(int currentLives)
