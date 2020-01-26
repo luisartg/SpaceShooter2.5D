@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 2115140690333890679}
   - component: {fileID: 8289773644522473784}
   - component: {fileID: -6942707682576158425}
+  - component: {fileID: 569579805620622861}
   - component: {fileID: 5491718418947044987}
-  - component: {fileID: 8419488056108629375}
   m_Layer: 0
-  m_Name: AmmoCollectable
+  m_Name: LifePowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 1567819865
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: fb435a0a7ce63c944b90665fc6fdd610, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9c1225097dc0f8743a7860a477f982ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,8 +100,24 @@ MonoBehaviour:
   _bottomLimit: -7
   _leftLimit: -11
   _rightLimit: 11
-  powerUpID: 3
-  _powerUpSound: {fileID: 8300000, guid: 4a6eff717077f6d4a94b64e1e30cfafa, type: 3}
+  powerUpID: 4
+  _powerUpSound: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+--- !u!70 &569579805620622861
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681293516859715772}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.017729193, y: -0.019348443}
+  m_Size: {x: 0.61008173, y: 1.0736347}
+  m_Direction: 0
 --- !u!50 &5491718418947044987
 Rigidbody2D:
   serializedVersion: 4
@@ -123,19 +139,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &8419488056108629375
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 681293516859715772}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.625

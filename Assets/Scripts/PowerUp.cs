@@ -8,8 +8,8 @@ public class PowerUp : MonoBehaviour
     [SerializeField] float _speed = 3f;
     [SerializeField] float _top = 7f;
     [SerializeField] float _bottomLimit = -7f;
-    [SerializeField] float _leftLimit = -11f;
-    [SerializeField] float _rightLimit = 11f;
+    [SerializeField] float _leftLimit = -9f;
+    [SerializeField] float _rightLimit = 9f;
 
     [SerializeField] int powerUpID = 0;
 
@@ -52,8 +52,17 @@ public class PowerUp : MonoBehaviour
                 break;
             case 3: AddAmmo(collision);
                 break;
+            case 4: AddLife(collision);
+                break;
         }
         
+    }
+
+    private void AddLife(Collider2D collision)
+    {
+        var player = collision.GetComponent<Player>();
+        player.AddLife();
+        Destroy(gameObject);
     }
 
     private void AddAmmo(Collider2D collision)

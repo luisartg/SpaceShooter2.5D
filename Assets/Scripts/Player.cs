@@ -252,6 +252,16 @@ public class Player : MonoBehaviour
     public void AddAmmo()
     {
         _ammo = 15;
+        _uiManagerRef.UpdateAmmoText(_ammo);
+    }
+
+    public void AddLife()
+    {
+        if (_lives < 3)
+        {
+            _lives++;
+        }
+        _uiManagerRef.UpdateLives(_lives);
     }
 
 }
