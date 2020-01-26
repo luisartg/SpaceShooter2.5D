@@ -249,4 +249,9 @@ public class Player : MonoBehaviour
         _uiManagerRef.UpdateScoreText(_score);
     }
 
+    public void AddAmmo()
+    {
+        _ammo = 15;
+    }
+
 }

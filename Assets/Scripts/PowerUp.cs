@@ -50,8 +50,17 @@ public class PowerUp : MonoBehaviour
                 break;
             case 2: ActivateShield(collision);
                 break;
+            case 3: AddAmmo(collision);
+                break;
         }
         
+    }
+
+    private void AddAmmo(Collider2D collision)
+    {
+        var player = collision.GetComponent<Player>();
+        player.AddAmmo();
+        Destroy(gameObject);
     }
 
     private void ActivateShield(Collider2D collision)
