@@ -44,12 +44,12 @@ public class EnergyShot : MonoBehaviour
     {
         if (collision.tag == "Enemy")
         {
+            GetComponent<Collider2D>().enabled = false;
             if (_currentEnergyPower > 0)
             {
-                GetComponent<Collider2D>().enabled = false;
                 MultiplyAttack(transform.position);
-                Destroy(gameObject);
             }
+            Destroy(gameObject);
         }
     }
 
