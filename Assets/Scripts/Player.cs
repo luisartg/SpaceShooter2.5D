@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     [SerializeField] int _score = 0;
     private UIManager _uiManagerRef = null;
     private BoostHUD _boostHUD = null;
+    private CameraShaker _cameraShaker = null;
 
     [SerializeField] GameObject[] _playerHits = null;
 
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour
         _audioSource.clip = _laserSound;
 
         _boostHUD = FindObjectOfType<BoostHUD>();
+        _cameraShaker = FindObjectOfType<CameraShaker>();
 
         if (!_spawnManager) Debug.Log("The Spawn Manager is null");
         if (!_uiManagerRef) Debug.Log("The UI Manager is null");
@@ -205,7 +207,7 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-
+        _cameraShaker.ActivateShake();
         if (_shieldActive)
         {
             ActivateShield(false);
