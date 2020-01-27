@@ -33,10 +33,15 @@ public class Player : MonoBehaviour
     private int _shieldCurrentStrength = 0;
     [SerializeField] private Color[] _shieldStrengthColors = new Color[] { Color.red, Color.yellow, Color.white };
 
+    private bool _speedPowerupActive = false;
     private bool _boostActive = false;
+    private bool _cooldownActive = false;
+    [SerializeField] float _boostTimeLimit = 5f;
+    private float _boostUsedTime = 0;
 
     [SerializeField] int _score = 0;
     private UIManager _uiManagerRef = null;
+    private BoostHUD _boostHUD = null;
 
     [SerializeField] GameObject[] _playerHits = null;
 
@@ -61,6 +66,8 @@ public class Player : MonoBehaviour
 
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _laserSound;
+
+        _boostHUD = FindObjectOfType<BoostHUD>();
 
         if (!_spawnManager) Debug.Log("The Spawn Manager is null");
         if (!_uiManagerRef) Debug.Log("The UI Manager is null");
@@ -92,15 +99,56 @@ public class Player : MonoBehaviour
     private float GetMovementValue(float axisValue)
     {
         float currentSpeed = _speed;
-        if (_boostActive)
+        if (_speedPowerupActive)
         {
             currentSpeed += _boostSpeed; 
         }
-        if (Input.GetKey(KeyCode.LeftShift))
+
+        if (Input.GetKey(KeyCode.LeftShift) && !_cooldownActive)
         {
             currentSpeed += _thrusterSpeed;
+            _boostActive = true;
         }
+        else
+        {
+            _boostActive = false;
+        }
+
+        CheckBoostStatus();
+
         return axisValue * currentSpeed * Time.deltaTime;
+    }
+
+    private void CheckBoostStatus()
+    {
+        if (_boostActive)
+        {
+            _boostUsedTime += Time.deltaTime;
+            _boostHUD.SetBoostOn();
+        }
+        else if (!_cooldownActive)
+        {
+            _boostUsedTime -= Time.deltaTime;
+            _boostHUD.SetBoostReady();
+        }
+        else
+        {
+            _boostUsedTime -= Time.deltaTime;
+            _boostHUD.SetBoostCooldown();
+        }
+
+        if (_boostUsedTime >= _boostTimeLimit)
+        {
+            _cooldownActive = true;
+        }
+
+        if (_boostUsedTime <= 0)
+        {
+            _cooldownActive = false;
+            _boostUsedTime = 0;
+        }
+
+        _boostHUD.UpdateBoostTime(_boostUsedTime);
     }
 
     private void LimitPositionY()
@@ -228,14 +276,14 @@ public class Player : MonoBehaviour
     public void ActivateSpeedBoost()
     {
         Debug.Log("Speed boost active");
-        _boostActive = true;
+        _speedPowerupActive = true;
         StartCoroutine(DeactivateSpeedBoost());
     }
 
     private IEnumerator DeactivateSpeedBoost()
     {
         yield return new WaitForSeconds(_powerUpPeriodSeconds);
-        _boostActive = false;
+        _speedPowerupActive = false;
     }
 
     public void ActivateShield(bool isActive)
