@@ -78,6 +78,7 @@ public class SpawnManager : MonoBehaviour
         {
             Enemy enemy = Instantiate(_enemyReference);
             enemy.transform.parent = _enemyContainer.transform;
+            enemy.ChangeMovementTypeTo(UnityEngine.Random.Range(0, 2));
             yield return new WaitForSeconds(_enemySpawnPeriodInSeconds);
         }
         Debug.Log("Spawner finished");

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Movement;
 
 public class Enemy : MonoBehaviour
 {
@@ -15,8 +16,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] int _shotMinTime = 0;
     [SerializeField] Laser _laser = null;
     [SerializeField] AudioClip _laserSound = null;
+    [SerializeField] int _movementType = 0;
+    [SerializeField] Vector2 _currentMovement;
     private bool _enemyAlive = true;
-
+    private IMovement movementGenerator = null;
 
     AudioSource _audioSource = null;
 
@@ -31,6 +34,19 @@ public class Enemy : MonoBehaviour
         _animator = GetComponent<Animator>();
         _collider = GetComponent<Collider2D>();
         _audioSource = GetComponent<AudioSource>();
+        PrepareMovement();
+    }
+
+    private void PrepareMovement()
+    {
+        switch (_movementType)
+        {
+            case 0: movementGenerator = new StraightDownMovement();
+                break;
+            case 1: movementGenerator = new HorizontalWaveDownMovement();
+                ((HorizontalWaveDownMovement)movementGenerator).SetProperties(90, 3);
+                break;
+        }
     }
 
     // Start is called before the first frame update
@@ -44,7 +60,7 @@ public class Enemy : MonoBehaviour
     {
         if (_enemyAlive)
         {
-            MoveDownward();
+            GenerateMovement();
             CheckEnemyPosition();
         }
     }
@@ -67,9 +83,9 @@ public class Enemy : MonoBehaviour
         transform.position = new Vector3(UnityEngine.Random.Range(_left + 1, _right - 1), _top, 0);
     }
 
-    private void MoveDownward()
+    private void GenerateMovement()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        transform.Translate(movementGenerator.GetMovementVector() * _speed * Time.deltaTime);
     }
 
     private void CheckEnemyPosition()
@@ -126,5 +142,11 @@ public class Enemy : MonoBehaviour
     private void EndDestruction()
     {
         Destroy(gameObject);
+    }
+
+    public void ChangeMovementTypeTo(int typeID)
+    {
+        _movementType = typeID;
+        PrepareMovement();
     }
 }
