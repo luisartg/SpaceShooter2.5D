@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject _tripleLaserPrefab = null;
     [SerializeField] GameObject _energyShotPrefab = null;
     [SerializeField] float _firerate = 0.15f;
-    [SerializeField] int _ammo = 15;
+    [SerializeField] int _maxAmmo = 15;
+    int _currentAmmo;
 
     [SerializeField] SpawnManager _spawnManager = null;
     [SerializeField] bool _tripleShotEnabled = false;
@@ -74,7 +75,7 @@ public class Player : MonoBehaviour
         if (!_spawnManager) Debug.Log("The Spawn Manager is null");
         if (!_uiManagerRef) Debug.Log("The UI Manager is null");
 
-        _uiManagerRef.UpdateAmmoText(_ammo);
+        AddAmmo();
     }
 
     // Update is called once per frame
@@ -176,10 +177,10 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _timeLeftToFire)
         {
             _timeLeftToFire = Time.time + _firerate;
-            if (_ammo > 0)
+            if (_currentAmmo > 0)
             {
-                _ammo--;
-                _uiManagerRef.UpdateAmmoText(_ammo);
+                _currentAmmo--;
+                _uiManagerRef.UpdateAmmoText(_currentAmmo, _maxAmmo);
                 if (_tripleShotEnabled)
                 {
                     Instantiate(_tripleLaserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
@@ -187,7 +188,7 @@ public class Player : MonoBehaviour
                 else if (_energyShotEnabled)
                 {
                     Instantiate(_energyShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
-                    _ammo++; // we are cancelling the ammo spent, only for this shot
+                    _currentAmmo++; // we are cancelling the ammo spent, only for this shot
                 }
                 else
                 {
@@ -265,7 +266,7 @@ public class Player : MonoBehaviour
     public void ActivateEnergyShot()
     {
         _energyShotEnabled = true;
-        _ammo = 15;
+        _currentAmmo = 15;
         StartCoroutine(DeactivateEnergyShot());
     }
 
@@ -321,8 +322,8 @@ public class Player : MonoBehaviour
 
     public void AddAmmo()
     {
-        _ammo = 15;
-        _uiManagerRef.UpdateAmmoText(_ammo);
+        _currentAmmo = _maxAmmo;
+        _uiManagerRef.UpdateAmmoText(_currentAmmo, _maxAmmo);
     }
 
     public void AddLife()
