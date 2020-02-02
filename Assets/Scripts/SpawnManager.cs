@@ -6,57 +6,25 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] GameObject _enemyContainer = null;
-    [SerializeField] Enemy _enemyReference = null;
-    [SerializeField] int _enemySpawnPeriodInSeconds = 3;
+    WaveDirector _waveDirector;
+    WaveData _currentWave;
 
-    [SerializeField] PowerUp[] _powerUpsArray = null;
-    [SerializeField] float[] _powerUpsWeights = null;
-    [SerializeField] List<WeightItem> _powerUps = null;
-    [SerializeField] int _puSpawnPeriodInSecondsMax = 7;
-    [SerializeField] int _puSpawnPeriodInSecondsMin = 3;
+    List<int> _enemiesWeights;
+    List<int> _pickupsWeights;
 
-   
+    bool _continueSpawning;
+    bool _continuePickups;
+    bool _pickupsStopped;
+    int _waveCount;
 
-    bool _continueSpawning = true;
+    UIManager _uiManager = null;
 
     // Start is called before the first frame update
     void Start()
     {
-        ConstructPowerUpList();
-    }
-
-    private void ConstructPowerUpList()
-    {
-        _powerUps = new List<WeightItem>();
-        float total = 0;
-        for (int i = 0; i < _powerUpsArray.Length; i++)
-        {
-            var weightItem = new WeightItem();
-            weightItem.Item = _powerUpsArray[i].gameObject;
-            weightItem.Weight = _powerUpsWeights[i];
-            total += weightItem.Weight;
-            weightItem.CalculatedWeight = total;
-            _powerUps.Add(weightItem);
-        }
-    }
-
-    private GameObject GetItemFromWeight(float weightToSearch)
-    {
-        GameObject item = null;
-        for (int i = _powerUps.Count-1; i >= 1; i--)
-        {
-            if (weightToSearch <= _powerUps[i].CalculatedWeight && weightToSearch > _powerUps[i-1].CalculatedWeight)
-            {
-                item = _powerUps[i].Item;
-                break;
-            }
-        }
-        //test
-        if (!item)
-        {
-            item = _powerUps[0].Item;
-        }
-        return item;
+        _uiManager = FindObjectOfType<UIManager>();
+        _waveDirector = GetComponent<WaveDirector>();
+        _waveCount = 0;
     }
 
     // Update is called once per frame
@@ -67,36 +35,94 @@ public class SpawnManager : MonoBehaviour
 
     public void StartSpawning()
     {
+        _waveCount++;
+        _uiManager.ShowLevel(_waveCount);
+        _currentWave = _waveDirector.GetWave();
+        
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
+        StartCoroutine(StartWaveTimeLimit());
     }
-
+    
     IEnumerator SpawnEnemyRoutine()
     {
+        _continueSpawning = true;
         yield return new WaitForSeconds(3);
         while (_continueSpawning)
         {
-            Enemy enemy = Instantiate(_enemyReference);
-            enemy.transform.parent = _enemyContainer.transform;
-            enemy.ChangeMovementTypeTo(UnityEngine.Random.Range(0, 2));
-            yield return new WaitForSeconds(_enemySpawnPeriodInSeconds);
+            for (int i = 0; i < _currentWave.EnemiesPerCycle; i++)
+            {
+                SpawnEnemy();
+            }
+            yield return new WaitForSeconds(UnityEngine.Random.Range(_currentWave.EnemySpawnCycle.Min, _currentWave.EnemySpawnCycle.Max));
         }
         Debug.Log("Spawner finished");
     }
 
+    private void SpawnEnemy()
+    {
+        Enemy enemy = Instantiate(_currentWave.GetRandomEnemyByWeight()).GetComponent<Enemy>();
+        enemy.transform.parent = _enemyContainer.transform;
+        enemy.ChangeMovementTypeTo(UnityEngine.Random.Range(0, 2));
+    }
+
     IEnumerator SpawnPowerUpRoutine()
     {
+        _continuePickups = true;
+        _pickupsStopped = false;
         yield return new WaitForSeconds(3);
-        while (_continueSpawning)
+        while (_continuePickups)
         {
-            GameObject powerUp = Instantiate(GetItemFromWeight(UnityEngine.Random.Range(0, _powerUps[_powerUps.Count-1].CalculatedWeight)));
-            yield return new WaitForSeconds(UnityEngine.Random.Range(_puSpawnPeriodInSecondsMin, _puSpawnPeriodInSecondsMax));
+            GameObject powerUp = Instantiate(_currentWave.GetRandomPickupByWeight());
+            yield return new WaitForSeconds(UnityEngine.Random.Range(_currentWave.PickupSpawnCycle.Min, _currentWave.PickupSpawnCycle.Min));
+        }
+        _pickupsStopped = true;
+    }
+
+    IEnumerator StartWaveTimeLimit()
+    {
+        yield return new WaitForSeconds(_currentWave.WaveDurationInSeconds);
+        StopSpawning(true);
+    }
+
+
+    public void StopSpawning(bool goNextWave = false)
+    {
+        _continueSpawning = false;
+
+        if (goNextWave)
+        {
+            StartCoroutine(WaitUntilAllEnemiesDestroyed());
+        }
+        else
+        {
+            _continuePickups = false;
         }
     }
 
-    public void StopSpawning()
+    IEnumerator WaitUntilAllEnemiesDestroyed()
     {
-        _continueSpawning = false;
+        bool allEnemiesDestroyed = false;
+        while (!allEnemiesDestroyed)
+        {
+            if (FindObjectsOfType<Enemy>().Length == 0)
+            {
+                allEnemiesDestroyed = true;
+                _continuePickups = false;
+            }
+            else
+            {
+                yield return new WaitForSeconds(2);
+            }
+        }
+
+        while (!_pickupsStopped)
+        {
+            yield return new WaitForSeconds(1); 
+            // we are making sure the pickups coroutine has stopped so a new one can start
+        }
+
+        StartSpawning();
     }
 }
 

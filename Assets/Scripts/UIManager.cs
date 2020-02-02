@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     private Image _livesDisplay = null;
     private Text _gameOverMessage = null;
     private Text _ammoText = null;
+    private Text _levelText = null;
     private GameObject _gameOverScreen = null;
     [SerializeField] Sprite[] _livesSpritesRef = null;
 
@@ -21,6 +22,8 @@ public class UIManager : MonoBehaviour
         _livesDisplay = transform.Find("LivesDisplay").GetComponent<Image>();
         _gameOverScreen = transform.Find("GameOverScreen").gameObject;
         _gameOverMessage = _gameOverScreen.transform.Find("GameOverText").GetComponent<Text>();
+        _levelText = transform.Find("LevelText").GetComponent<Text>();
+        _levelText.gameObject.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -65,5 +68,18 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             textState = !textState;
         }
+    }
+
+    public void ShowLevel(int level)
+    {
+        _levelText.text = "Level " + level.ToString();
+        _levelText.gameObject.SetActive(true);
+        StartCoroutine(TurnOffLevelText());
+    }
+
+    IEnumerator TurnOffLevelText()
+    {
+        yield return new WaitForSeconds(3);
+        _levelText.gameObject.SetActive(false);
     }
 }
