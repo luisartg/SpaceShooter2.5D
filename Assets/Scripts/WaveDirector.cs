@@ -71,11 +71,12 @@ public class WaveDirector : MonoBehaviour
         _wave.Pickups.Add(GetGameObjectSpawnData(0, 20)); // triple shot
         _wave.Pickups.Add(GetGameObjectSpawnData(1, 10)); // speed
         _wave.Pickups.Add(GetGameObjectSpawnData(2, 20)); // shield
-        _wave.Pickups.Add(GetGameObjectSpawnData(3, 15)); // life
+        _wave.Pickups.Add(GetGameObjectSpawnData(3, 10)); // life
         _wave.Pickups.Add(GetGameObjectSpawnData(4, 5));  // energy shot
         _wave.Pickups.Add(GetGameObjectSpawnData(5, 30)); // ammo
-        
-        
+        _wave.Pickups.Add(GetGameObjectSpawnData(6, 5)); // slowdown pickup
+
+
 
         _waveCreator.AddReferencesToWave(_wave);
         _wave.CalculateAllProbabilityWeights();

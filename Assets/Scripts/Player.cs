@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
     [SerializeField] float _boostTimeLimit = 5f;
     private float _boostUsedTime = 0;
 
+    private bool _slowDownActive = false;
+
     [SerializeField] int _score = 0;
     private UIManager _uiManagerRef = null;
     private BoostHUD _boostHUD = null;
@@ -117,6 +119,11 @@ public class Player : MonoBehaviour
             _boostActive = false;
         }
 
+        if (_slowDownActive)
+        {
+            currentSpeed *= 0.3f;
+        }
+        
         CheckBoostStatus();
 
         return axisValue * currentSpeed * Time.deltaTime;
@@ -312,6 +319,18 @@ public class Player : MonoBehaviour
             }
         }
         
+    }
+
+    public void ActivateSlowDown()
+    {
+        _slowDownActive = true;
+        StartCoroutine(DeactivateSlowDown());
+    }
+
+    private IEnumerator DeactivateSlowDown()
+    {
+        yield return new WaitForSeconds(_powerUpPeriodSeconds);
+        _slowDownActive = false;
     }
 
     public void AddToScore(int points)
