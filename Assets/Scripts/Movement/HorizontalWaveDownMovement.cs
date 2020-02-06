@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Movement
 {
-    class HorizontalWaveDownMovement : IMovement
+    public class HorizontalWaveDownMovement : IMovement
     {
         private float _startTime;
         private float _arc;

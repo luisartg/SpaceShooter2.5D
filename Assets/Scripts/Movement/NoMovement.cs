@@ -7,8 +7,11 @@ using UnityEngine;
 
 namespace Assets.Scripts.Movement
 {
-    public interface IMovement
+    public class NoMovement : IMovement
     {
-        Vector2 GetMovementVector();
+        public Vector2 GetMovementVector()
+        {
+            return new Vector2(0, 0);
+        }
     }
 }
