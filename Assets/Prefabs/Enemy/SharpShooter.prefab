@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 2102112992905965664}
   - component: {fileID: 1805923092947585441}
   - component: {fileID: 5398240041657489270}
-  - component: {fileID: 5519625134588396387}
+  - component: {fileID: 5287459880597514553}
+  - component: {fileID: 5274184799262447300}
   m_Layer: 0
   m_Name: SharpShooter
   m_TagString: Enemy
@@ -136,10 +137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyScoreValue: 10
-  _shotMaxTime: 10
-  _shotMinTime: 0
-  _laser: {fileID: 0}
-  _laserSound: {fileID: 0}
 --- !u!114 &5398240041657489270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,7 +155,7 @@ MonoBehaviour:
   _right: 11
   _left: -11
   _currentMovement: {x: 0, y: 0}
---- !u!114 &5519625134588396387
+--- !u!114 &5287459880597514553
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,13 +164,111 @@ MonoBehaviour:
   m_GameObject: {fileID: 8811870634303249576}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c08809f0cf4e8c4f8bfb508c09ff925, type: 3}
+  m_Script: {fileID: 11500000, guid: 51c2b240a76035b478fc24fce17cd335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shotMaxTime: 2
-  _shotMinTime: 0
-  _laser: {fileID: 3036874639885820701, guid: 9df63b315d54c0a45b549513d52373e6, type: 3}
-  _laserSound: {fileID: 8300000, guid: a38940268f6dc26418482f2ba41a7dd0, type: 3}
+  _shotMaxTime: 8
+  _shotMinTime: 5
+  _laser: {fileID: 3036874639885820700, guid: 9df63b315d54c0a45b549513d52373e6, type: 3}
+  _laserSound: {fileID: 8300000, guid: 3766c7a98d015e941945eb9580c30f66, type: 3}
+  _warningSound: {fileID: 8300000, guid: 1ff3104997acf2b479dbcfa6f9fcde9f, type: 3}
+  _sightMaterial: {fileID: 2100000, guid: e3b10e6872a0b80498ffa4c6113a2658, type: 2}
+--- !u!82 &5274184799262447300
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8811870634303249576}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &7809090556684978653
 PrefabInstance:
   m_ObjectHideFlags: 0

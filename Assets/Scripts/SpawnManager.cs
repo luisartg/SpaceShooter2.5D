@@ -61,9 +61,9 @@ public class SpawnManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        Enemy enemy = Instantiate(_currentWave.GetRandomEnemyByWeight()).GetComponent<Enemy>();
+        GameObject enemy = Instantiate(_currentWave.GetRandomEnemyByWeight());
         enemy.transform.parent = _enemyContainer.transform;
-        enemy.ChangeMovementTypeTo(UnityEngine.Random.Range(0, 2));
+        //enemy.ChangeMovementTypeTo(UnityEngine.Random.Range(0, 2));
     }
 
     IEnumerator SpawnPowerUpRoutine()

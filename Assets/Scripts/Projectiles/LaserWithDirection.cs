@@ -11,6 +11,13 @@ public class LaserWithDirection : MonoBehaviour
     [SerializeField] float _rightLimit = 11f;
     [SerializeField] Vector2 _direction = Vector2.down;
 
+    GameObject laser = null;
+
+    private void Awake()
+    {
+        laser = transform.Find("Laser").gameObject;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -51,5 +58,16 @@ public class LaserWithDirection : MonoBehaviour
     public void SetDirection(Vector2 newDirection)
     {
         _direction = newDirection;
+        laser.transform.rotation = Quaternion.Euler(0,0,GetRotation(_direction));
+    }
+
+    private float GetRotation(Vector2 direction)
+    {
+        float angle = Mathf.Acos(direction.x);
+        if (direction.y < 0)
+        {
+            angle = 2 * Mathf.PI - angle;
+        }
+        return angle * 180 / Mathf.PI + 90; //we rotate additional 90º due to initial vertical position of the laser graphic
     }
 }
