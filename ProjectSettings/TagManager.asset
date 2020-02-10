@@ -8,6 +8,7 @@ TagManager:
   - Laser
   - EnemyLaser
   - Energy
+  - EnemyShield
   layers:
   - Default
   - TransparentFX

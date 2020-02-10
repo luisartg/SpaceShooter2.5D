@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class EnemySniperWeapon : MonoBehaviour
 {
-    [SerializeField] int _shotMaxTime = 8;
-    [SerializeField] int _shotMinTime = 5;
     [SerializeField] GameObject _laser = null;
     [SerializeField] AudioClip _laserSound = null;
     [SerializeField] AudioClip _warningSound = null;
@@ -83,7 +81,7 @@ public class EnemySniperWeapon : MonoBehaviour
         }
         else
         {
-            TurnOffSight();
+            SetSightVisibility(false);
             _audioSource.Stop();
         }
     }
