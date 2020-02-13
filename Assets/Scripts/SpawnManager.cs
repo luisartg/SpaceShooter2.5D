@@ -105,7 +105,7 @@ public class SpawnManager : MonoBehaviour
         bool allEnemiesDestroyed = false;
         while (!allEnemiesDestroyed)
         {
-            if (FindObjectsOfType<Enemy>().Length == 0)
+            if (FindObjectsOfType<EnemyCore>().Length == 0)
             {
                 allEnemiesDestroyed = true;
                 _continuePickups = false;
