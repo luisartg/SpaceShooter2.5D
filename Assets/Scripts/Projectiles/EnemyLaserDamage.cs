@@ -14,5 +14,12 @@ public class EnemyLaserDamage : MonoBehaviour
             AudioSource.PlayClipAtPoint(_laserShock, Camera.main.transform.position);
             Destroy(gameObject);
         }
+
+        if (collision.GetComponent<PowerUp>())
+        {
+            AudioSource.PlayClipAtPoint(_laserShock, Camera.main.transform.position);
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
     }
 }

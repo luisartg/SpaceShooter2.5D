@@ -70,6 +70,7 @@ public class WaveDirector : MonoBehaviour
         _wave.Enemies.Add(GetGameObjectSpawnData(1, 10));
         _wave.Enemies.Add(GetGameObjectSpawnData(2, 10));
         _wave.Enemies.Add(GetGameObjectSpawnData(3, 10));
+        _wave.Enemies.Add(GetGameObjectSpawnData(4, 10));
         //pickups
         _wave.Pickups.Add(GetGameObjectSpawnData(0, 20)); // triple shot
         _wave.Pickups.Add(GetGameObjectSpawnData(1, 10)); // speed
