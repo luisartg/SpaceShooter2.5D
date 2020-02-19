@@ -6,14 +6,17 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour
 {
     [SerializeField] float _speed = 3f;
+    [SerializeField] float _directedSpeedMultiplier = 3f;
     [SerializeField] float _top = 7f;
     [SerializeField] float _bottomLimit = -7f;
     [SerializeField] float _leftLimit = -9f;
     [SerializeField] float _rightLimit = 9f;
+    
 
     [SerializeField] int powerUpID = 0;
 
     [SerializeField] AudioClip _powerUpSound = null;
+    Player _playerRef = null;
 
     private void Awake()
     {
@@ -25,16 +28,37 @@ public class PowerUp : MonoBehaviour
     {
         transform.position = new Vector2(UnityEngine.Random.Range(_leftLimit, _rightLimit), _top);
         GetComponent<Collider2D>().enabled = true;
+        _playerRef = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector2.down * _speed * Time.deltaTime);
+        Movement();
         if (transform.position.y < _bottomLimit)
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Movement()
+    {
+        if (Input.GetKey(KeyCode.C))
+        {
+            transform.Translate(GetDirectionToPlayer() * _speed * _directedSpeedMultiplier * Time.deltaTime);
+        }
+        else
+        {
+            transform.Translate(Vector2.down * _speed * Time.deltaTime);
+        }
+        
+    }
+
+    private Vector2 GetDirectionToPlayer()
+    {
+        return new Vector2(_playerRef.transform.position.x - transform.position.x,
+                           _playerRef.transform.position.y - transform.position.y)
+                           .normalized;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
