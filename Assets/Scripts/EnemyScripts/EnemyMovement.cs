@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Movement;
+using System;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] float _right = 11f;
     [SerializeField] float _left = -11f;
     [SerializeField] Vector2 _currentMovement;
+    [SerializeField] Vector2 _customDirection;
     [SerializeField] bool _movementEnabled = true;
     private IMovement _movementGenerator = null;
 
@@ -18,6 +20,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void Awake()
     {
+        RemoveCustomDirection();
         ResetPosition();
         _enemyCore = GetComponent<EnemyCore>();
         _movementGenerator = new StraightDownMovement();
@@ -42,8 +45,21 @@ public class EnemyMovement : MonoBehaviour
     {
         if (_movementEnabled)
         {
-            transform.Translate(_movementGenerator.GetMovementVector() * _speed * Time.deltaTime);
+            if (CustomMovementIsSet())
+            {
+                transform.Translate(_customDirection * _speed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(_movementGenerator.GetMovementVector() * _speed * Time.deltaTime);
+            }
+            
         }
+    }
+
+    private bool CustomMovementIsSet()
+    {
+        return _customDirection.x != 0 || _customDirection.y != 0;
     }
 
     private void CheckEnemyPosition()
@@ -62,5 +78,15 @@ public class EnemyMovement : MonoBehaviour
     public void EnableMovement(bool enable)
     {
         _movementEnabled = enable;
+    }
+
+    public void SetCustomDirection(Vector2 newDirection)
+    {
+        _customDirection = newDirection.normalized;
+    }
+
+    public void RemoveCustomDirection()
+    {
+        _customDirection = new Vector2(0, 0);
     }
 }
