@@ -78,9 +78,10 @@ public class WaveDirector : MonoBehaviour
         _wave.Pickups.Add(GetGameObjectSpawnData(1, 10)); // speed
         _wave.Pickups.Add(GetGameObjectSpawnData(2, 20)); // shield
         _wave.Pickups.Add(GetGameObjectSpawnData(3, 10)); // life
-        _wave.Pickups.Add(GetGameObjectSpawnData(4, 5));  // energy shot
+        _wave.Pickups.Add(GetGameObjectSpawnData(4, 3));  // energy shot
         _wave.Pickups.Add(GetGameObjectSpawnData(5, 30)); // ammo
-        _wave.Pickups.Add(GetGameObjectSpawnData(6, 5)); // slowdown pickup
+        _wave.Pickups.Add(GetGameObjectSpawnData(6, 4)); // slowdown pickup
+        _wave.Pickups.Add(GetGameObjectSpawnData(7, 3)); // missile pickup
 
 
 

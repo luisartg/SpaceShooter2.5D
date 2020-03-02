@@ -214,16 +214,20 @@ MonoBehaviour:
     type: 3}
   _energyShotPrefab: {fileID: 1661062200660484061, guid: c9ac29f50a1debb45b6d6dff631c3fe5,
     type: 3}
+  _missilePrefab: {fileID: 2500802180449876912, guid: a79149c2487685043ba0b2c0e01cfc33,
+    type: 3}
   _firerate: 0.15
-  _ammo: 15
+  _maxAmmo: 15
   _spawnManager: {fileID: 0}
   _tripleShotEnabled: 0
   _energyShotEnabled: 0
+  _missileShotEnabled: 0
   _powerUpPeriodSeconds: 6
   _shieldStrengthColors:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
+  _boostTimeLimit: 5
   _score: 0
   _playerHits:
   - {fileID: 46987068248312082}

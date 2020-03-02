@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject _laserPrefab = null;
     [SerializeField] GameObject _tripleLaserPrefab = null;
     [SerializeField] GameObject _energyShotPrefab = null;
+    [SerializeField] GameObject _missilePrefab = null;
     [SerializeField] float _firerate = 0.15f;
     [SerializeField] int _maxAmmo = 15;
     int _currentAmmo;
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
     [SerializeField] SpawnManager _spawnManager = null;
     [SerializeField] bool _tripleShotEnabled = false;
     [SerializeField] bool _energyShotEnabled = false;
+    [SerializeField] bool _missileShotEnabled = false;
     [SerializeField] int _powerUpPeriodSeconds = 6;
 
     private float _timeLeftToFire = -1f;
@@ -195,7 +197,12 @@ public class Player : MonoBehaviour
                 else if (_energyShotEnabled)
                 {
                     Instantiate(_energyShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
-                    _currentAmmo++; // we are cancelling the ammo spent, only for this shot
+                    _currentAmmo++; // we are cancelling the ammo spent for this shot
+                }
+                else if (_missileShotEnabled)
+                {
+                    Instantiate(_missilePrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                    _currentAmmo++; // we are cancelling the ammo spent for this shot
                 }
                 else
                 {
@@ -281,6 +288,19 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         _energyShotEnabled = false;
+    }
+
+    public void ActivateMissiles()
+    {
+        _missileShotEnabled = true;
+        _currentAmmo = 15;
+        StartCoroutine(DeactivateMissiles());
+    }
+
+    private IEnumerator DeactivateMissiles()
+    {
+        yield return new WaitForSeconds(5);
+        _missileShotEnabled = false;
     }
 
     public void ActivateSpeedBoost()

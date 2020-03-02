@@ -82,6 +82,8 @@ public class PowerUp : MonoBehaviour
                 break;
             case 6: ActivateSlowDown(collision);
                 break;
+            case 7: ActivateMissiles(collision);
+                break;
         }
         
     }
@@ -132,6 +134,13 @@ public class PowerUp : MonoBehaviour
     {
         var player = collision.GetComponent<Player>();
         player.ActivateSlowDown();
+        Destroy(gameObject);
+    }
+
+    private void ActivateMissiles(Collider2D collision)
+    {
+        var player = collision.GetComponent<Player>();
+        player.ActivateMissiles();
         Destroy(gameObject);
     }
 }
